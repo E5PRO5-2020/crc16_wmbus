@@ -32,7 +32,7 @@ def crc16_wmbus(message: bytes) -> bytes:
     CRC uses a finite field F=[0, 1], so we do subtraction using XOR.
     CRC is the final remainder from repeated long division of message by polynomial,
     when no further division is possible.
-    The outout CRC is complemented by XOR with 0xFFFF.
+    The output CRC is complemented by XOR with 0xFFFF.
 
     Algorithm:
     _________
@@ -92,4 +92,9 @@ if __name__ == '__main__':
     # Another example from captured real OmniPower telegram
     expected_crc = b'1170'
     data = b'79138C4491CE000000000000000300000000000000'
+    assert crc16_wmbus(data) == expected_crc
+
+    # Telegram with data record headers
+    expected_crc = b'0fe6'
+    data = b'780404CE00000004843C00000000042B0300000004AB3C00000000'
     assert crc16_wmbus(data) == expected_crc
